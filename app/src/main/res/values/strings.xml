@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Baixa el to</string>
+    <string name="tile_label">Escolta veu</string>
+    <string name="notification_channel_name">Monitor de veu</string>
+    <string name="notification_listening">Escoltant el teu to de veu</string>
+    <string name="notification_shout_title">Baixa el to</string>
+    <string name="notification_shout_text">S\'ha detectat un crit</string>
+</resources>
