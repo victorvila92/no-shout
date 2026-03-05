@@ -1,1 +1,48 @@
-.idea
+# Android / Gradle
+*.iml
+.gradle/
+build/
+local.properties
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+output.json
+
+# Android Studio / IntelliJ
+.idea/
+*.ipr
+*.iws
+out/
+
+# Kotlin
+*.kotlin_module
+
+# NDK
+obj/
+.externalNativeBuild/
+.cxx/
+
+# Signing
+*.jks
+*.keystore
+key.properties
+upload-keystore.jks
+
+# Logs / temp
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Cursor / editor
+.cursor/
+
+# Misc
+captures/
+.externalNativeBuild
+*.hprof

@@ -4,7 +4,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:colorPrimary">#6750A4</item>
-        <item name="android:colorPrimaryDark">#3700B3</item>
+        <item name="android:colorPrimary">#0D7377</item>
+        <item name="android:colorPrimaryDark">#004F52</item>
     </style>
 </resources>

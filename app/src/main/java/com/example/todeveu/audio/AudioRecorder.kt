@@ -6,7 +6,7 @@ import android.media.MediaRecorder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.flowOn
 import kotlin.math.sqrt
 
 /**
@@ -67,17 +67,15 @@ class AudioRecorder(
     fun frameFlow(): Flow<AudioFrame> = flow {
         val record = audioRecord ?: return@flow
         val shortBuffer = ShortArray(frameSamples)
-        withContext(Dispatchers.IO) {
-            while (record.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
-                val read = record.read(shortBuffer, 0, frameSamples)
-                if (read <= 0) continue
-                val samples = FloatArray(read) { shortBuffer[it] / 32768f }
-                val rms = rms(samples)
-                val dbRelatiu = if (rms > 1e-10f) 20f * kotlin.math.log10(rms) else -80f
-                emit(AudioFrame(samples, rms, dbRelatiu, read))
-            }
+        while (record.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
+            val read = record.read(shortBuffer, 0, frameSamples)
+            if (read <= 0) continue
+            val samples = FloatArray(read) { shortBuffer[it] / 32768f }
+            val rms = rms(samples)
+            val dbRelatiu = if (rms > 1e-10f) 20f * kotlin.math.log10(rms) else -80f
+            emit(AudioFrame(samples, rms, dbRelatiu, read))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     private fun rms(samples: FloatArray): Float {
         var sum = 0.0

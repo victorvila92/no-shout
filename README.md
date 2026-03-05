@@ -1,4 +1,4 @@
-# Baixa el to (No Shout)
+# No Shout
 
 App Android d’ús **personal** (APK privat, no publicable a Play Store) que escolta contínuament en segon pla, detecta la **teva veu** (VAD + verificació d’orador) i, si detecta que “crides” (volum alt sostingut), et envia una notificació d’alta prioritat que vibra al rellotge (Pixel Watch 3).
 
@@ -32,7 +32,7 @@ App Android d’ús **personal** (APK privat, no publicable a Play Store) que es
 
 - Les notificacions es configuren al **telèfon**. Assegura’t que les notificacions d’aquesta app estan activades (Ajustos → Notificacions → Baixa el to).
 - Al **Pixel Watch**: Ajustos del rellotge → Notificacions → assegura’t que el telèfon pot enviar notificacions al rellotge i que no has silenciat aquesta app.
-- La notificació “Baixa el to” és d’alta prioritat i amb vibració perquè arribi al rellotge.
+- La notificació “No Shout” és d’alta prioritat i amb vibració perquè arribi al rellotge.
 
 ## Limitacions
 
@@ -78,7 +78,7 @@ App Android d’ús **personal** (APK privat, no publicable a Play Store) que es
 - `audio/`: AudioRecorder, VAD, FeatureExtractor (FFT, ZCR, band energy).
 - `ml/`: EmbeddingModel, MockEmbeddingModel, TFLiteEmbeddingModel, SpeakerVerifier.
 - `service/`: VoiceMonitorService (Foreground Service amb tipus microphone).
-- `notif/`: NotificationHelper (canals, notificació persistent, alerta “Baixa el to”).
+- `notif/`: NotificationHelper (canals, notificació persistent, alerta “No Shout”).
 - `data/`: Room (EventEntity, EventDao, AppDatabase), SettingsDataStore.
 - `ui/`: MainActivity, MainViewModel, pantalles (Main, Enrollment, Settings, History), navegació.
 - `tile/`: VoiceMonitorTileService (Quick Settings Tile).

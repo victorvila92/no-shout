@@ -3,7 +3,7 @@ package com.example.todeveu.ui.nav
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.todeveu.ui.HistoryScreen
 import com.example.todeveu.ui.EnrollmentScreen
@@ -23,8 +23,8 @@ fun NoShoutNav(
     viewModel: MainViewModel,
     onOpenBatterySettings: () -> Unit,
 ) {
-    var current by rememberSaveable { mutableStateOf<Screen>(Screen.Main) }
-    when (val s = current) {
+    var current by remember { mutableStateOf<Screen>(Screen.Main) }
+    when (current) {
         is Screen.Main -> MainScreen(
             viewModel = viewModel,
             onEnrollment = { current = Screen.Enrollment },
