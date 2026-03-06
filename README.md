@@ -55,20 +55,13 @@ App Android d’ús **personal** (APK privat, no publicable a Play Store) que es
 ## Afegir un model TFLite real
 
 1. Obtén un model TFLite d’embeddings d’orador (per exemple un model exportat des de TensorFlow/Keras o un model preentrenat compatible).
-2. Col·loca el fitxer a `app/src/main/assets/speaker_embedding.tflite`.
-3. Obre `TFLiteEmbeddingModel.kt` i adapta:
+2. **Renomena'l** a `speaker_embedding.tflite` i col·loca'l a `app/src/main/assets/speaker_embedding.tflite` (la carpeta `assets` existeix).
+3. Torna a compilar i instal·lar. Als logs (filtre `EmbeddingModel`) veuràs "using TFLite" o "using MockEmbeddingModel".
+4. (Opcional) Si el model espera **mel-spectrogram** o una mida d'entrada diferent, adapta `TFLiteEmbeddingModel.kt` i/o `EmbeddingModelFactory.kt` (expectedInputSamples). Obre `TFLiteEmbeddingModel.kt` i adapta:
    - **Forma d’entrada**: `interpreter.getInputTensor(0).shape()` indica les dimensions esperades (p.ex. [1, 16000] per 1 s a 16 kHz, o [1, 98, 40] per mels).
    - **Preprocessament**: si el model espera mel-spectrogram, implementa la conversió (sampleRate, n_mels, window/hop) i escriu el resultat a `inputBuffer`.
    - **Sortida**: `interpreter.getOutputTensor(0).shape()` dóna la mida de l’embedding; el codi ja normalitza L2.
-4. Al servei (`VoiceMonitorService.kt`), substitueix la creació de `MockEmbeddingModel` per:
-   ```kotlin
-   embeddingModel = try {
-       TFLiteEmbeddingModel(this, "speaker_embedding.tflite", 16000, expectedInputSamples)
-   } catch (e: Exception) {
-       MockEmbeddingModel(32, 16000)
-   }
-   ```
-5. Paràmetres típics a alinear amb el model:
+5. **Nota**: L'app ja fa servir TFLite si el fitxer existeix (veure `EmbeddingModelFactory.kt`). Si el model espera mel-spectrogram o una durada d'entrada diferent, adapta `TFLiteEmbeddingModel.kt` i `EmbeddingModelFactory.kt` (expectedInputSamples, per defecte 32000 = 2 s). Paràmetres a alinear amb el model:
    - **sampleRate**: 16000 Hz (o el que esperi el model).
    - **Mel bins / window / hop**: si el model usa mels, cal que coincideixin amb el preprocessament del model.
    - **Durada del segment**: `expectedInputSamples` ha de correspondre a la longitud d’entrada del model (en mostres).
@@ -76,7 +69,7 @@ App Android d’ús **personal** (APK privat, no publicable a Play Store) que es
 ## Estructura del projecte
 
 - `audio/`: AudioRecorder, VAD, FeatureExtractor (FFT, ZCR, band energy).
-- `ml/`: EmbeddingModel, MockEmbeddingModel, TFLiteEmbeddingModel, SpeakerVerifier.
+- `ml/`: EmbeddingModel, EmbeddingModelFactory, MockEmbeddingModel, TFLiteEmbeddingModel, SpeakerVerifier.
 - `service/`: VoiceMonitorService (Foreground Service amb tipus microphone).
 - `notif/`: NotificationHelper (canals, notificació persistent, alerta “No Shout”).
 - `data/`: Room (EventEntity, EventDao, AppDatabase), SettingsDataStore.

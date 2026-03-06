@@ -3,6 +3,7 @@ package com.example.todeveu.audio
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -17,6 +18,9 @@ class AudioRecorder(
     private val sampleRate: Int = 16000,
     private val frameSizeMs: Int = 25,
 ) {
+    companion object {
+        private const val TAG = "AudioRecorder"
+    }
     private val channelConfig = AudioFormat.CHANNEL_IN_MONO
     private val audioFormat = AudioFormat.ENCODING_PCM_16BIT
     private val frameSamples = (sampleRate * frameSizeMs / 1000).coerceAtLeast(1)
@@ -49,10 +53,12 @@ class AudioRecorder(
         }
         record.startRecording()
         audioRecord = record
+        Log.d(TAG, "start: OK rate=$sampleRate frameSamples=$frameSamples")
         return true
     }
 
     fun stop() {
+        Log.d(TAG, "stop")
         audioRecord?.apply {
             if (recordingState == AudioRecord.RECORDSTATE_RECORDING) stop()
             release()

@@ -11,12 +11,14 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.todeveu.R
 import com.example.todeveu.service.VoiceMonitorService
 import com.example.todeveu.ui.MainActivity
 
 object NotificationHelper {
+    private const val TAG = "NotificationHelper"
     const val CHANNEL_LISTENING = "voice_monitor_listening"
     const val CHANNEL_ALERT = "voice_monitor_alert"
     const val NOTIFICATION_LISTENING_ID = 1001
@@ -68,7 +70,11 @@ object NotificationHelper {
         vibrationEnabled: Boolean,
         silenceUntil: Long = 0L,
     ) {
-        if (silenceUntil > System.currentTimeMillis()) return
+        if (silenceUntil > System.currentTimeMillis()) {
+            Log.d(TAG, "showShoutNotification: ignorat (en cooldown)")
+            return
+        }
+        Log.i(TAG, "showShoutNotification: mostrant alerta 'Baixa el to'")
         if (vibrationEnabled) {
             val v = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
                 (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager)?.defaultVibrator

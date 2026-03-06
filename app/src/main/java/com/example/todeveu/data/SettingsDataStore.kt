@@ -45,11 +45,11 @@ data class AppSettings(
 )
 
 val defaultSettings = AppSettings(
-    dbThreshold = -12f,
-    sustainMs = 800,
+    dbThreshold = -22f,
+    sustainMs = 500,
     cooldownMs = 10_000,
-    speakerThreshold = 0.6f,
-    vadThreshold = 0.5f,
+    speakerThreshold = 0.5f,
+    vadThreshold = 0.35f,
     vibrationEnabled = true,
     inferenceIntervalMs = 500,
     debugMode = false,

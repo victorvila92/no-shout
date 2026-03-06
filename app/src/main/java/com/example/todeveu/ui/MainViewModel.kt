@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.todeveu.data.AppSettings
 import com.example.todeveu.data.SettingsDataStore
 import com.example.todeveu.data.createAppDatabase
+import com.example.todeveu.ml.SpeakerEmbeddingModel
+import com.example.todeveu.ml.createEmbeddingModel
 import com.example.todeveu.service.VoiceMonitorService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +22,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _settings = MutableStateFlow<AppSettings?>(null)
     val settings: StateFlow<AppSettings?> = _settings.asStateFlow()
+
+    /** Mateix model que el servei (TFLite si hi ha asset, sinó Mock). Per enrolament. */
+    private val embeddingModel: SpeakerEmbeddingModel by lazy { createEmbeddingModel(app) }
+
+    fun embedForEnrollment(audio16k: FloatArray): FloatArray = embeddingModel.embed(audio16k)
 
     init {
         viewModelScope.launch {

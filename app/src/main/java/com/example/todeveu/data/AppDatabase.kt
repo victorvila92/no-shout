@@ -10,7 +10,15 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
 }
 
-fun createAppDatabase(context: Context): AppDatabase =
-    Room.databaseBuilder(context, AppDatabase::class.java, "todeveu_db")
+private var dbInstance: AppDatabase? = null
+
+fun createAppDatabase(context: Context): AppDatabase {
+    return dbInstance ?: Room.databaseBuilder(
+        context.applicationContext,
+        AppDatabase::class.java,
+        "todeveu_db"
+    )
         .fallbackToDestructiveMigration()
         .build()
+        .also { dbInstance = it }
+}

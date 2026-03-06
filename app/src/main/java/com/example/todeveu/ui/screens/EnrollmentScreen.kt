@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.todeveu.ml.MockEmbeddingModel
 import com.example.todeveu.ui.components.AppSpacing
 import com.example.todeveu.ui.components.AppTopBar
 import com.example.todeveu.ui.components.PrimaryButton
@@ -54,7 +53,6 @@ fun EnrollmentScreen(
     var error by remember { mutableStateOf<String?>(null) }
     val phrases = PHRASES_CA
     val totalPhrases = 3
-    val model = remember { MockEmbeddingModel(32, 16000) }
     val progress = if (totalPhrases > 0) collectedEmbeddings.size.toFloat() / totalPhrases else 0f
 
     Scaffold(
@@ -75,6 +73,12 @@ fun EnrollmentScreen(
                             text = "Llegeix en veu alta 3 frases. No es guarda àudio, només un perfil de veu per reconèixer-te.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Spacer(modifier = Modifier.height(AppSpacing.xs))
+                        Text(
+                            text = "Nota: amb el model actual (mock) la distinció entre la teva veu i d’altres és limitada; les alertes es basen sobretot en volum i forma espectral.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.outline,
                         )
                         Spacer(modifier = Modifier.height(AppSpacing.sm))
                         PrimaryButton(
@@ -137,7 +141,7 @@ fun EnrollmentScreen(
                                 rec.stop()
                                 rec.release()
                                 val floatSamples = FloatArray(samples.size) { samples[it] / 32768f }
-                                val emb = model.embed(floatSamples)
+                                val emb = viewModel.embedForEnrollment(floatSamples)
                                 withContext(Dispatchers.Main) {
                                     val newList = collectedEmbeddings + emb
                                     collectedEmbeddings = newList
